@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Flying</title>
+  </head>
+  <body>
+    <script>
+      function randomPosition(r, m) {
+        return new THREE.Vector3(
+          (Math.random()*2-1)*r,
+          (Math.random()*2-1)*r,
+          Math.random()*m
+        );
+      }
+
+      function randomPick(choices) {
+        return choices[Math.floor(Math.random()*choices.length)];
+      }
+    </script>
+  </body>
+</html>
