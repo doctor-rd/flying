@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Flying</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.min.js"></script>
   </head>
   <body>
     <script>
@@ -17,6 +18,53 @@
       function randomPick(choices) {
         return choices[Math.floor(Math.random()*choices.length)];
       }
+
+      const scene = new THREE.Scene();
+
+      const colors = [0xff0000, 0xff00ff, 0x0000ff,0xffffff];
+
+      for (let i=0; i<1000; i++) {
+        let geo = new THREE.BoxGeometry(.1, .1, .1);
+        let mat = new THREE.MeshBasicMaterial({
+          color: randomPick(colors)
+        });
+        let mesh = new THREE.Mesh(geo, mat);
+        mesh.position.copy(randomPosition(25, 50));
+        scene.add(mesh);
+      }
+
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth/window.innerHeight,
+        1,
+        100
+      );
+      camera.lookAt(new THREE.Vector3(0, 0, 1));
+
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      let ctrl = {
+        speed: -0.1,
+      };
+
+      let then = 0;
+      function step(now) {
+        deltaTime = now - then;
+        then = now;
+
+        renderer.render(scene, camera);
+
+        scene.traverse(function(child) {
+          if (child == scene) return;
+          child.position.z+=ctrl.speed*deltaTime/20;
+          if (child.position.z<0) child.position.z+=50;
+        });
+
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
     </script>
   </body>
 </html>
