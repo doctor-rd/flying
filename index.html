@@ -30,6 +30,7 @@
         });
         let mesh = new THREE.Mesh(geo, mat);
         mesh.position.copy(randomPosition(25, 50));
+        mesh.rotation_enabled = randomPick([true, false]);
         scene.add(mesh);
       }
 
@@ -60,6 +61,7 @@
           if (child == scene) return;
           child.position.z+=ctrl.speed*deltaTime/20;
           if (child.position.z<0) child.position.z+=50;
+          if (child.rotation_enabled) child.rotateOnAxis(new THREE.Vector3(0,0,1), deltaTime/500);
         });
 
         requestAnimationFrame(step);
