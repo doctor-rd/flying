@@ -24,7 +24,7 @@
       const colors = [0xff0000, 0xff00ff, 0x0000ff,0xffffff];
 
       for (let i=0; i<1000; i++) {
-        let geo = new THREE.BoxGeometry(.1, .1, .1);
+        let geo = new THREE.BoxGeometry(.3, .3, .3);
         let mat = new THREE.MeshBasicMaterial({
           color: randomPick(colors)
         });
@@ -41,6 +41,20 @@
         100
       );
       camera.lookAt(new THREE.Vector3(0, 0, 1));
+
+      window.addEventListener('click', onClick, false);
+      raycaster = new THREE.Raycaster();
+      mouseVector = new THREE.Vector2();
+      function onClick(ev) {
+        mouseVector.x = 2*(ev.clientX / window.innerWidth) - 1;
+        mouseVector.y = 1 - 2*(ev.clientY / window.innerHeight);
+        raycaster.setFromCamera(mouseVector, camera);
+        scene.traverseVisible(function(child) {
+          if (child == scene) return;
+          if (raycaster.intersectObject(child, false).length > 0)
+            child.material.color.set(0x00ff00);
+        });
+      }
 
       const renderer = new THREE.WebGLRenderer();
       renderer.setSize(window.innerWidth, window.innerHeight);
