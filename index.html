@@ -69,12 +69,12 @@
 
         renderer.render(scene, camera);
 
-        scene.traverse(function(child) {
-          if (child == scene) return;
+        for (let i=0; i<scene.children.length; i++) {
+          let child = scene.children[i];
           child.position.z+=ctrl.speed*deltaTime/20;
           if (child.position.z<0) child.position.z+=50;
           if (child.rotation_enabled) child.rotateOnAxis(new THREE.Vector3(0,0,1), deltaTime/500);
-        });
+        };
 
         requestAnimationFrame(step);
       }
