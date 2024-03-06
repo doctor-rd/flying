@@ -49,11 +49,9 @@
         mouseVector.x = 2*(ev.clientX / window.innerWidth) - 1;
         mouseVector.y = 1 - 2*(ev.clientY / window.innerHeight);
         raycaster.setFromCamera(mouseVector, camera);
-        scene.traverseVisible(function(child) {
-          if (child == scene) return;
-          if (raycaster.intersectObject(child, false).length > 0)
-            child.material.color.set(0x00ff00);
-        });
+        const intersects = raycaster.intersectObjects(scene.children);
+        for (let i=0; i<intersects.length; i++)
+          intersects[i].object.material.color.set(0x00ff00);
       }
 
       const renderer = new THREE.WebGLRenderer();
